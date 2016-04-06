@@ -4,24 +4,32 @@ This is a client library for the [Toxiproxy](https://github.com/shopify/toxiprox
 
 Installation:
 
-    <dependency>
-      <groupId>eu.rekawek</groupId>
-      <artifactId>toxiproxy-java</artifactId>
-      <version>1.0</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>eu.rekawek</groupId>
+  <artifactId>toxiproxy-java</artifactId>
+  <version>1.0</version>
+</dependency>
+```
 
 ## Usage
 
 By default, the `ToxiproxyClient` tries to connect to the `http://localhost:8474`. This might be changed using the parametrized constructor:
 
-    ToxiproxyClient client = new ToxiproxyClient("192.168.1.1", 8474);
+```java
+ToxiproxyClient client = new ToxiproxyClient("192.168.1.1", 8474);
+```
 
 Following snippet will create a new proxy for the MySQL service:
 
-    Proxy mysqlProxy = client.createProxy("mysql", "localhost:21212", "localhost:3306");
+```java
+Proxy mysqlProxy = client.createProxy("mysql", "localhost:21212", "localhost:3306");
+```
 
 The proxy will listen on port 21212 on the loopback interface and transfer all the traffic to port 3306. We may also create a [toxic](https://github.com/shopify/toxiproxy#toxics):
 
-    mysqlProxy.downstream().latency().enable().setLatency(100).setJitter(15);
+```java
+mysqlProxy.downstream().latency().enable().setLatency(100).setJitter(15);
+```
 
 For a full list of toxics, please visit the [Toxiproxy README](https://github.com/shopify/toxiproxy#toxics).
