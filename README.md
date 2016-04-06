@@ -22,6 +22,6 @@ Following snippet will create a new proxy for the MySQL service:
 
 The proxy will listen on port 21212 on the loopback interface and transfer all the traffic to port 3306. We may also create a [toxic](https://github.com/shopify/toxiproxy#toxics):
 
-    mysqlProxy.downstream().latency().enabled().setLatency(100).setJitter(15);
+    mysqlProxy.downstream().latency().enable().setLatency(100).setJitter(15);
 
 For a full list of toxics, please visit the [Toxiproxy README](https://github.com/shopify/toxiproxy#toxics).
