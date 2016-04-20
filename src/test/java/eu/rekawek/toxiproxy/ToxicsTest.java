@@ -14,6 +14,10 @@ import java.util.List;
 import eu.rekawek.toxiproxy.model.Toxic;
 import eu.rekawek.toxiproxy.model.ToxicDirection;
 import eu.rekawek.toxiproxy.model.ToxicList;
+import eu.rekawek.toxiproxy.model.toxic.Latency;
+import eu.rekawek.toxiproxy.model.toxic.Slicer;
+import eu.rekawek.toxiproxy.model.toxic.SlowClose;
+import eu.rekawek.toxiproxy.model.toxic.Timeout;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -113,60 +117,57 @@ public class ToxicsTest {
     @Test
     public void testBandwidth() throws IOException {
         Bandwidth bandwidth = toxics.bandwidth("my-toxic", UPSTREAM, 100);
-
         assertEquals(100, bandwidth.getRate());
+
         bandwidth.setRate(200);
         assertEquals(200, bandwidth.getRate());
     }
-/*
+
     @Test
     public void testLatency() throws IOException {
-        Latency latency = toxics.latency();
+        Latency latency = toxics.latency("my-toxic", UPSTREAM, 100);
 
-        latency.enable().setLatency(100).setJitter(15);
-        assertTrue(latency.isEnabled());
         assertEquals(100, latency.getLatency());
-        assertEquals(15, latency.getJitter());
+        assertEquals(0, latency.getJitter());
 
-        latency.disable();
-        assertFalse(latency.isEnabled());
+        latency.setLatency(200);
+        latency.setJitter(10);
+        assertEquals(200, latency.getLatency());
+        assertEquals(10, latency.getJitter());
     }
 
     @Test
     public void testSlicer() throws IOException {
-        Slicer slicer = toxics.slicer();
+        Slicer slicer = toxics.slicer("my-toxic", UPSTREAM, 100, 10);
 
-        slicer.enable().setAverageSize(128).setSizeVariation(64).setDelay(100);
-        assertTrue(slicer.isEnabled());
-        assertEquals(128, slicer.getAverageSize());
-        assertEquals(64, slicer.getSizeVariation());
-        assertEquals(100, slicer.getDelay());
+        assertEquals(100, slicer.getAverageSize());
+        assertEquals(10, slicer.getDelay());
 
-        slicer.disable();
-        assertFalse(slicer.isEnabled());
+        slicer.setAverageSize(200);
+        slicer.setDelay(20);
+        assertEquals(200, slicer.getAverageSize());
+        assertEquals(20, slicer.getDelay());
     }
 
     @Test
     public void testSlowClose() throws IOException {
-        SlowClose slowClose = toxics.slowClose();
+        SlowClose slowClose = toxics.slowClose("my-toxic", UPSTREAM, 100);
 
-        slowClose.enable().setDelay(100);
-        assertTrue(slowClose.isEnabled());
         assertEquals(100, slowClose.getDelay());
 
-        slowClose.disable();
-        assertFalse(slowClose.isEnabled());
+        slowClose.setDelay(200);
+        assertEquals(200, slowClose.getDelay());
     }
+
 
     @Test
     public void testTimeout() throws IOException {
-        Timeout timeout = toxics.timeout();
+        Timeout timeout = toxics.timeout("my-toxic", UPSTREAM, 100);
 
-        timeout.enable().setTimeout(100);
-        assertTrue(timeout.isEnabled());
         assertEquals(100, timeout.getTimeout());
 
-        timeout.disable();
-        assertFalse(timeout.isEnabled());
-    }*/
+        timeout.setTimeout(200);
+        assertEquals(200, timeout.getTimeout());
+    }
+
 }

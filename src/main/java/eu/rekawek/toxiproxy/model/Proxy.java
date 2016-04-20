@@ -73,7 +73,7 @@ public class Proxy {
     public void disable() throws IOException {
         setFromJson(httpClient.post(path, "enabled", false));
     }
-    
+
     public void delete() throws IOException {
         httpClient.delete(path);
     }

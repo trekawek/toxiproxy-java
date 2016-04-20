@@ -5,6 +5,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import eu.rekawek.toxiproxy.HttpClient;
 import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
+import eu.rekawek.toxiproxy.model.toxic.Latency;
+import eu.rekawek.toxiproxy.model.toxic.Slicer;
+import eu.rekawek.toxiproxy.model.toxic.SlowClose;
+import eu.rekawek.toxiproxy.model.toxic.Timeout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,22 +54,21 @@ public class ToxicList {
         return new Bandwidth(httpClient, path, name, direction, rate);
     }
 
-    /*
-    public Latency addLatency(String name, ToxicDirection direction, long latency) {
-        return add(new Latency(httpClient, getToxicPath(name), name, direction, latency));
+    public Latency latency(String name, ToxicDirection direction, long latency) throws IOException {
+        return new Latency(httpClient, path, name, direction, latency);
     }
 
-    public Slicer addSlicer(String name, ToxicDirection direction, long averageSize, long delay) {
-        return add(new Slicer(httpClient, getToxicPath(name), name, direction, averageSize, delay));
+    public Slicer slicer(String name, ToxicDirection direction, long averageSize, long delay) throws IOException {
+        return new Slicer(httpClient, path, name, direction, averageSize, delay);
     }
 
-    public SlowClose addSlowClose(String name, ToxicDirection direction, long delay) {
-        return add(new SlowClose(httpClient, getToxicPath(name), name, direction, delay));
+    public SlowClose slowClose(String name, ToxicDirection direction, long delay) throws IOException {
+        return new SlowClose(httpClient, path, name, direction, delay);
     }
 
-    public Timeout addTimeout(String name, ToxicDirection direction, long timeout) {
-        return add(new Timeout(httpClient, getToxicPath(name), name, direction, timeout));
-    }*/
+    public Timeout timeout(String name, ToxicDirection direction, long timeout) throws IOException {
+        return new Timeout(httpClient, path, name, direction, timeout);
+    }
 
     private String getToxicPath(String name) {
         return path + "/" + name;
