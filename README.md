@@ -29,7 +29,7 @@ Proxy mysqlProxy = client.createProxy("mysql", "localhost:21212", "localhost:330
 The proxy will listen on port 21212 on the loopback interface and transfer all the traffic to port 3306. We may also create a [toxic](https://github.com/shopify/toxiproxy#toxics):
 
 ```java
-mysqlProxy.downstream().latency().enable().setLatency(100).setJitter(15);
+mysqlProxy.toxics().latency("my-latency-toxic", DOWNSTREAM, 100).setJitter(15);
 ```
 
 For a full list of toxics, please visit the [Toxiproxy README](https://github.com/shopify/toxiproxy#toxics).
