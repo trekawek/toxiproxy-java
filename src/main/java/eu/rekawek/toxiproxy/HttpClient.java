@@ -2,12 +2,17 @@ package eu.rekawek.toxiproxy;
 
 import static java.lang.String.format;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.Buffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -25,7 +30,7 @@ public class HttpClient {
         this.port = port;
     }
 
-    public JsonObject post(String path, String name, long value) throws IOException {
+    public JsonObject post(String path, String name, float value) throws IOException {
         JsonObject data = new JsonObject();
         data.addProperty(name, value);
         return post(path, data);
@@ -43,9 +48,23 @@ public class HttpClient {
         return post(path, data);
     }
 
-    public JsonObject get(String path) throws IOException {
+    public String getPlain(String path) throws IOException {
         HttpURLConnection connection = getConnection(path);
-        return readResponse(connection);
+        final int status = connection.getResponseCode();
+        if (status < 200 || status > 299) {
+            throw new IOException(readTextAndClose(connection.getErrorStream()));
+        } else {
+            return readTextAndClose(connection.getInputStream());
+        }
+    }
+
+    public JsonObject get(String path) throws IOException {
+        return get(path, JsonObject.class);
+    }
+
+    public <T> T get(String path, Class<T> clazz) throws IOException {
+        HttpURLConnection connection = getConnection(path);
+        return readResponse(connection, clazz);
     }
 
     public JsonObject post(String path, JsonObject data) throws IOException {
@@ -59,7 +78,7 @@ public class HttpClient {
             writer.close();
         }
 
-        return readResponse(connection);
+        return readResponse(connection, JsonObject.class);
     }
 
     public int delete(String path) throws IOException {
@@ -75,20 +94,33 @@ public class HttpClient {
         return (HttpURLConnection) url.openConnection();
     }
 
-    private static JsonObject readResponse(HttpURLConnection connection) throws IOException {
+    private static <T> T readResponse(HttpURLConnection connection, Class<T> clazz) throws IOException {
         final int status = connection.getResponseCode();
         if (status < 200 || status > 299) {
-            JsonObject error = readAndClose(connection.getErrorStream());
+            JsonObject error = readAndClose(connection.getErrorStream(), JsonObject.class);
             String errorMsg = format("[%d] %s", error.get("status").getAsLong(), error.get("title").getAsString());
             throw new IOException(errorMsg);
         } else {
-            return readAndClose(connection.getInputStream());
+            return readAndClose(connection.getInputStream(), clazz);
         }
     }
 
-    private static JsonObject readAndClose(InputStream is) throws IOException {
-        JsonObject json = GSON.fromJson(new InputStreamReader(is), JsonObject.class);
-        is.close();
-        return json;
+    private static <T> T readAndClose(InputStream is, Class<T> clazz) throws IOException {
+        try {
+            return GSON.fromJson(new InputStreamReader(is), clazz);
+        } finally {
+            is.close();
+        }
+    }
+
+    private static String readTextAndClose(InputStream is) throws IOException {
+        char[] buffer = new char[1024];
+        StringBuilder result = new StringBuilder();
+        Reader r = new InputStreamReader(is);
+        int len;
+        while ((len = r.read(buffer)) > -1) {
+            result.append(buffer, 0, len);
+        }
+        return result.toString();
     }
 }

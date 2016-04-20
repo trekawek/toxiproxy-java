@@ -1,11 +1,12 @@
 package eu.rekawek.toxiproxy.model;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.google.gson.JsonObject;
 
 import eu.rekawek.toxiproxy.HttpClient;
-import eu.rekawek.toxiproxy.model.toxic.Toxics;
+import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
 
 public class Proxy {
 
@@ -21,9 +22,7 @@ public class Proxy {
 
     private boolean enabled;
 
-    private Toxics upstreamToxics;
-
-    private Toxics downstreamToxics;
+    private ToxicList toxicList;
 
     public Proxy(HttpClient httpClient, String path, JsonObject json) {
         this.httpClient = httpClient;
@@ -36,8 +35,7 @@ public class Proxy {
         listen = json.get("listen").getAsString();
         upstream = json.get("upstream").getAsString();
         enabled = json.get("enabled").getAsBoolean();
-        upstreamToxics = new Toxics(httpClient, path + "/upstream/toxics", json.get("upstream_toxics"));
-        downstreamToxics = new Toxics(httpClient, path + "/downstream/toxics", json.get("downstream_toxics"));
+        toxicList = new ToxicList(httpClient, path + "/toxics");
     }
 
     public String getName() {
@@ -56,12 +54,8 @@ public class Proxy {
         return enabled;
     }
 
-    public Toxics upstream() {
-        return upstreamToxics;
-    }
-
-    public Toxics downstream() {
-        return downstreamToxics;
+    public ToxicList toxics() {
+        return toxicList;
     }
 
     public void setListen(String listen) throws IOException {
