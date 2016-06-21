@@ -95,4 +95,12 @@ public class ToxiproxyClientTest {
     public void testVersion() throws IOException {
         assertFalse(tp.version().isEmpty());
     }
+
+    @Test
+    public void testReset() throws IOException {
+        tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
+        assertFalse(tp.getProxies().isEmpty());
+        tp.reset();
+        assertTrue(tp.getProxies().isEmpty());
+    }
 }
