@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
+import eu.rekawek.toxiproxy.model.ToxicDirection;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -98,9 +99,15 @@ public class ToxiproxyClientTest {
 
     @Test
     public void testReset() throws IOException {
-        tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
-        assertFalse(tp.getProxies().isEmpty());
+        Proxy proxy = tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
+        proxy.toxics().latency("latency-toxic-down", ToxicDirection.DOWNSTREAM, 10);
+        proxy.toxics().latency("latency-toxic-up", ToxicDirection.UPSTREAM, 10);
+        proxy.disable();
+
         tp.reset();
-        assertTrue(tp.getProxies().isEmpty());
+
+        proxy = tp.getProxy("test-proxy");
+        assertTrue(proxy.toxics().getAll().isEmpty());
+        assertTrue(proxy.isEnabled());
     }
 }
