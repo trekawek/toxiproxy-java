@@ -1,4 +1,4 @@
-package eu.rekawek.toxiproxy.model;
+package eu.rekawek.toxiproxy;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import eu.rekawek.toxiproxy.HttpClient;
+import eu.rekawek.toxiproxy.model.ToxicList;
 import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
 
 public class Proxy {
@@ -76,5 +77,9 @@ public class Proxy {
 
     public void delete() throws IOException {
         httpClient.delete(path);
+    }
+
+    void reset() throws IOException {
+        setFromJson(httpClient.get(path));
     }
 }

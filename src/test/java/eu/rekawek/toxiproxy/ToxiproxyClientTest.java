@@ -14,9 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.rekawek.toxiproxy.ToxiproxyClient;
-import eu.rekawek.toxiproxy.model.Proxy;
-
 public class ToxiproxyClientTest {
 
     private final ToxiproxyClient tp = new ToxiproxyClient();
@@ -106,7 +103,6 @@ public class ToxiproxyClientTest {
 
         tp.reset();
 
-        proxy = tp.getProxy("test-proxy");
         assertTrue(proxy.toxics().getAll().isEmpty());
         assertTrue(proxy.isEnabled());
     }

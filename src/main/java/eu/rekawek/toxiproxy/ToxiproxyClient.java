@@ -4,15 +4,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import eu.rekawek.toxiproxy.model.Proxy;
+import static java.util.Collections.newSetFromMap;
+import static java.util.Collections.synchronizedSet;
 
 public class ToxiproxyClient {
 
     private final HttpClient httpClient;
+
+    private final Set<Proxy> proxies = synchronizedSet(newSetFromMap(new WeakHashMap<Proxy, Boolean>()));
 
     public ToxiproxyClient() {
         this("localhost", 8474);
@@ -38,16 +43,25 @@ public class ToxiproxyClient {
         json.addProperty("upstream", upstream);
 
         JsonObject result = httpClient.post("/proxies", json);
-        return new Proxy(httpClient, "/proxies/" + name, result);
+        return newProxyInstance(name, result);
     }
 
     public Proxy getProxy(String name) throws IOException {
         JsonObject result = httpClient.get("/proxies/" + name);
-        return new Proxy(httpClient, "/proxies/" + name, result);
+        return newProxyInstance(name, result);
+    }
+
+    private Proxy newProxyInstance(String name, JsonObject json) {
+        Proxy p = new Proxy(httpClient, "/proxies/" + name, json);
+        proxies.add(p);
+        return p;
     }
 
     public void reset() throws IOException {
         httpClient.post("/reset");
+        for (Proxy p : proxies) {
+            p.reset();
+        }
     }
 
     public String version() throws IOException {

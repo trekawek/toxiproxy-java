@@ -3,16 +3,12 @@ package eu.rekawek.toxiproxy;
 import static eu.rekawek.toxiproxy.model.ToxicDirection.DOWNSTREAM;
 import static eu.rekawek.toxiproxy.model.ToxicDirection.UPSTREAM;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import eu.rekawek.toxiproxy.model.Toxic;
-import eu.rekawek.toxiproxy.model.ToxicDirection;
 import eu.rekawek.toxiproxy.model.ToxicList;
 import eu.rekawek.toxiproxy.model.toxic.Latency;
 import eu.rekawek.toxiproxy.model.toxic.Slicer;
@@ -22,11 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
-import eu.rekawek.toxiproxy.model.Proxy;
 import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
 
 public class ToxicsTest {
