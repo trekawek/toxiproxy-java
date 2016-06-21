@@ -47,7 +47,7 @@ public class ToxiproxyClient {
     }
 
     public void reset() throws IOException {
-        httpClient.get("/reset");
+        httpClient.post("/reset");
     }
 
     public String version() throws IOException {

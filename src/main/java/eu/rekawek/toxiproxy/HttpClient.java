@@ -67,6 +67,14 @@ public class HttpClient {
         return readResponse(connection, clazz);
     }
 
+    public int post(String path) throws IOException {
+        HttpURLConnection connection = getConnection(path);
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        connection.getInputStream().close();
+        return connection.getResponseCode();
+    }
+
     public JsonObject post(String path, JsonObject data) throws IOException {
         HttpURLConnection connection = getConnection(path);
         connection.setDoOutput(true);
