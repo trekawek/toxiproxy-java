@@ -91,4 +91,8 @@ public class ToxiproxyClientTest {
         assertTrue(proxy.isEnabled());
     }
 
+    @Test
+    public void testVersion() throws IOException {
+        assertFalse(tp.version().isEmpty());
+    }
 }
