@@ -1,3 +1,7 @@
+# 2.1
+
+* Fixed support for the reset() API method (#4).
+
 # 2.0
 
 * Support for the new Toxiproxy 2.0.0 API
