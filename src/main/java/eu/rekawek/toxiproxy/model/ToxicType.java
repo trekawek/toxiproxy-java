@@ -3,12 +3,16 @@ package eu.rekawek.toxiproxy.model;
 import com.google.gson.JsonObject;
 import eu.rekawek.toxiproxy.HttpClient;
 import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
+import eu.rekawek.toxiproxy.model.toxic.Latency;
+import eu.rekawek.toxiproxy.model.toxic.Slicer;
+import eu.rekawek.toxiproxy.model.toxic.SlowClose;
+import eu.rekawek.toxiproxy.model.toxic.Timeout;
 
 public enum ToxicType {
 
     LATENCY {
         protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
-            return null;
+            return new Latency(httpClient, path, json);
         }
     }, BANDWIDTH {
         protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
@@ -16,15 +20,15 @@ public enum ToxicType {
         }
     }, SLOW_CLOSE {
         protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
-            return null;
+            return new SlowClose(httpClient, path, json);
         }
     }, TIMEOUT {
         protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
-            return null;
+            return new Timeout(httpClient, path, json);
         }
     }, SLICER {
         protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
-            return null;
+            return new Slicer(httpClient, path, json);
         }
     };
 
