@@ -106,7 +106,7 @@ public class HttpClient {
         final int status = connection.getResponseCode();
         if (status < 200 || status > 299) {
             JsonObject error = readAndClose(connection.getErrorStream(), JsonObject.class);
-            String errorMsg = format("[%d] %s", error.get("status").getAsLong(), error.get("title").getAsString());
+            String errorMsg = format("[%d] %s", error.get("status").getAsLong(), error.get("error").getAsString());
             throw new IOException(errorMsg);
         } else {
             return readAndClose(connection.getInputStream(), clazz);

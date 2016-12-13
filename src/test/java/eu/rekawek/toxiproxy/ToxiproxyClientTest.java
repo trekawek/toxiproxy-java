@@ -12,9 +12,14 @@ import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class ToxiproxyClientTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private final ToxiproxyClient tp = new ToxiproxyClient();
 
@@ -105,5 +110,14 @@ public class ToxiproxyClientTest {
 
         assertTrue(proxy.toxics().getAll().isEmpty());
         assertTrue(proxy.isEnabled());
+    }
+
+    @Test
+    public void testErrorCodeAndMessage() throws Exception {
+        expectedException.expect(IOException.class);
+        expectedException.expectMessage("[409] proxy already exists");
+
+        tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
+        tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
     }
 }
