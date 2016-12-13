@@ -1,20 +1,25 @@
 package eu.rekawek.toxiproxy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.util.List;
-
 import eu.rekawek.toxiproxy.model.ToxicDirection;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ToxiproxyClientTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private final ToxiproxyClient tp = new ToxiproxyClient();
 
@@ -55,6 +60,7 @@ public class ToxiproxyClientTest {
         assertEquals("127.0.0.1:26379", proxy.getListen());
         assertEquals("localhost:6379", proxy.getUpstream());
     }
+
 
     @Test
     public void testListProxy() throws IOException {
@@ -105,5 +111,14 @@ public class ToxiproxyClientTest {
 
         assertTrue(proxy.toxics().getAll().isEmpty());
         assertTrue(proxy.isEnabled());
+    }
+
+    @Test
+    public void should_fail_with_error_code_and_message_when_trying_to_create_already_existing_proxy() throws Exception {
+        expectedException.expect(IOException.class);
+        expectedException.expectMessage("[409] proxy already exists");
+
+        Proxy proxy = tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
+        Proxy shouldThrowError = tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
     }
 }
