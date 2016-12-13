@@ -1,8 +1,8 @@
 package eu.rekawek.toxiproxy;
 
-import static java.lang.String.format;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,12 +10,8 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.Buffer;
-import java.nio.ByteOrder;
-import java.nio.CharBuffer;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import static java.lang.String.format;
 
 public class HttpClient {
 
@@ -106,7 +102,7 @@ public class HttpClient {
         final int status = connection.getResponseCode();
         if (status < 200 || status > 299) {
             JsonObject error = readAndClose(connection.getErrorStream(), JsonObject.class);
-            String errorMsg = format("[%d] %s", error.get("status").getAsLong(), error.get("title").getAsString());
+            String errorMsg = format("[%d] %s", error.get("status").getAsLong(), error.get("error").getAsString());
             throw new IOException(errorMsg);
         } else {
             return readAndClose(connection.getInputStream(), clazz);
