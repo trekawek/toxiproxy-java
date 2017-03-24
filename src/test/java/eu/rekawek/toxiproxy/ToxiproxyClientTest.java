@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.List;
 
 import eu.rekawek.toxiproxy.model.ToxicDirection;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
