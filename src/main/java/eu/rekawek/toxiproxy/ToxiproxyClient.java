@@ -51,6 +51,14 @@ public class ToxiproxyClient {
         return newProxyInstance(name, result);
     }
 
+    public Proxy getProxyOrNull(String name) {
+        try {
+            return getProxy(name);
+        } catch(IOException e) {
+            return null;
+        }
+    }
+
     private Proxy newProxyInstance(String name, JsonObject json) {
         Proxy p = new Proxy(httpClient, "/proxies/" + name, json);
         proxies.add(p);

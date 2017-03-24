@@ -61,8 +61,10 @@ public class ToxiproxyClientTest {
         assertEquals("127.0.0.1:26379", proxy.getListen());
         assertEquals("localhost:6379", proxy.getUpstream());
 
+        assertNull(tp.getProxyOrNull("invalid-proxy"));
+
         expectedException.expect(IOException.class);
-        assertNull(tp.getProxy("invalid-proxy"));
+        tp.getProxy("invalid-proxy");
     }
 
     @Test
