@@ -105,9 +105,19 @@ public class HttpClient {
     private static <T> T readResponse(HttpURLConnection connection, Class<T> clazz) throws IOException {
         final int status = connection.getResponseCode();
         if (status < 200 || status > 299) {
-            JsonObject error = readAndClose(connection.getErrorStream(), JsonObject.class);
-            String errorMsg = format("[%d] %s", error.get("status").getAsLong(), error.get("error").getAsString());
-            throw new IOException(errorMsg);
+            String errorBody = readTextAndClose(connection.getErrorStream());
+            String message = null;
+            if (errorBody == null) {
+                message = format("[%d]");
+            } else {
+                JsonObject errorJson = GSON.fromJson(errorBody, JsonObject.class);
+                if (errorJson == null || !errorJson.has("error")) {
+                    message = format("[%d]", errorBody);
+                } else  {
+                    message = format("[%d] %s", status, errorJson.get("error").getAsString());
+                }
+            }
+            throw new IOException(message);
         } else {
             return readAndClose(connection.getInputStream(), clazz);
         }

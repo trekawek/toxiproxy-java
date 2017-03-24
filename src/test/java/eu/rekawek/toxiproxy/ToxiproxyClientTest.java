@@ -2,12 +2,15 @@ package eu.rekawek.toxiproxy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
 
 import eu.rekawek.toxiproxy.model.ToxicDirection;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -59,6 +62,9 @@ public class ToxiproxyClientTest {
         assertEquals("test-proxy", proxy.getName());
         assertEquals("127.0.0.1:26379", proxy.getListen());
         assertEquals("localhost:6379", proxy.getUpstream());
+
+        expectedException.expect(IOException.class);
+        assertNull(tp.getProxy("invalid-proxy"));
     }
 
     @Test
