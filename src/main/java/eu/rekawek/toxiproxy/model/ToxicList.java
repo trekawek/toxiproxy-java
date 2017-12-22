@@ -9,6 +9,7 @@ import eu.rekawek.toxiproxy.model.toxic.Latency;
 import eu.rekawek.toxiproxy.model.toxic.Slicer;
 import eu.rekawek.toxiproxy.model.toxic.SlowClose;
 import eu.rekawek.toxiproxy.model.toxic.Timeout;
+import eu.rekawek.toxiproxy.model.toxic.LimitData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,6 +69,10 @@ public class ToxicList {
 
     public Timeout timeout(String name, ToxicDirection direction, long timeout) throws IOException {
         return new Timeout(httpClient, path, name, direction, timeout);
+    }
+
+    public LimitData limitData(String name, ToxicDirection direction, long bytes) throws IOException {
+        return new LimitData(httpClient, path, name, direction, bytes);
     }
 
     private String getToxicPath(String name) {

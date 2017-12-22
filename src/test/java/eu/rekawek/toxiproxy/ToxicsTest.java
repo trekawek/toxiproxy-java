@@ -10,16 +10,11 @@ import java.util.List;
 
 import eu.rekawek.toxiproxy.model.Toxic;
 import eu.rekawek.toxiproxy.model.ToxicList;
-import eu.rekawek.toxiproxy.model.toxic.Latency;
-import eu.rekawek.toxiproxy.model.toxic.Slicer;
-import eu.rekawek.toxiproxy.model.toxic.SlowClose;
-import eu.rekawek.toxiproxy.model.toxic.Timeout;
+import eu.rekawek.toxiproxy.model.toxic.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
 
 public class ToxicsTest {
 
@@ -162,4 +157,13 @@ public class ToxicsTest {
         assertEquals(200, timeout.getTimeout());
     }
 
+    @Test
+    public void testLimitData() throws IOException {
+        LimitData timeout = toxics.limitData("my-toxic", UPSTREAM, 100);
+
+        assertEquals(100, timeout.getBytes());
+
+        timeout.setBytes(200);
+        assertEquals(200, timeout.getBytes());
+    }
 }
