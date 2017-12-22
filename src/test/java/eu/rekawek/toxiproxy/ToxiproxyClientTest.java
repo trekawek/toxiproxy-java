@@ -8,7 +8,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
+import eu.rekawek.toxiproxy.model.Toxic;
 import eu.rekawek.toxiproxy.model.ToxicDirection;
+import eu.rekawek.toxiproxy.model.toxic.LimitData;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -126,4 +128,26 @@ public class ToxiproxyClientTest {
         tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
         tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
     }
+
+
+    @Test
+    public void testToxicLimitData() throws IOException {
+        Proxy proxy = tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
+
+        proxy.toxics().limitData("limit-data-down", ToxicDirection.DOWNSTREAM, 10);
+        proxy.toxics().limitData("limit-data-up", ToxicDirection.UPSTREAM, 10);
+
+        proxy = tp.getProxy("test-proxy");
+
+        LimitData toxicUp = (LimitData)proxy.toxics().get("limit-data-up");
+        LimitData toxicDown = (LimitData)proxy.toxics().get("limit-data-down");
+
+        assertEquals(toxicUp.getBytes(), 10);
+        assertEquals(toxicUp.getStream(), ToxicDirection.UPSTREAM);
+
+        assertEquals(toxicDown.getBytes(), 10);
+        assertEquals(toxicDown.getStream(), ToxicDirection.DOWNSTREAM);
+    }
+
+
 }

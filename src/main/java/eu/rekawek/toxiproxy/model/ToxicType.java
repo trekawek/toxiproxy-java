@@ -7,6 +7,7 @@ import eu.rekawek.toxiproxy.model.toxic.Latency;
 import eu.rekawek.toxiproxy.model.toxic.Slicer;
 import eu.rekawek.toxiproxy.model.toxic.SlowClose;
 import eu.rekawek.toxiproxy.model.toxic.Timeout;
+import eu.rekawek.toxiproxy.model.toxic.LimitData;
 
 public enum ToxicType {
 
@@ -29,6 +30,10 @@ public enum ToxicType {
     }, SLICER {
         protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
             return new Slicer(httpClient, path, json);
+        }
+    }, LIMIT_DATA {
+        protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
+            return new LimitData(httpClient, path, json);
         }
     };
 
