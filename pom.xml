@@ -49,11 +49,11 @@
         <artifactId>bnd-maven-plugin</artifactId>
         <version>3.5.0</version>
         <executions>
-            <execution>
-                <goals>
-                    <goal>bnd-process</goal>
-                </goals>
-            </execution>
+          <execution>
+            <goals>
+              <goal>bnd-process</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>
