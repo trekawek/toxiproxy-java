@@ -14,23 +14,23 @@ import eu.rekawek.toxiproxy.model.toxic.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 public class ToxicsTest {
 
-    private final ToxiproxyClient tp = new ToxiproxyClient();
+    @ClassRule
+    public static ToxiproxyRule toxiproxyRule = new ToxiproxyRule();
+
+    private ToxiproxyClient tp;
 
     private Proxy proxy;
 
     private ToxicList toxics;
 
-    @BeforeClass
-    public static void toxiproxyEnabled() {
-        ToxiproxyClientTest.toxiproxyEnabled();
-    }
-
     @Before
     public void createProxy() throws IOException {
+        tp = toxiproxyRule.getToxiproxyClient();
         proxy = tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
         toxics = proxy.toxics();
     }

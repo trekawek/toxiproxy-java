@@ -8,34 +8,30 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
-import eu.rekawek.toxiproxy.model.Toxic;
 import eu.rekawek.toxiproxy.model.ToxicDirection;
 import eu.rekawek.toxiproxy.model.toxic.LimitData;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class ToxiproxyClientTest {
 
+    @ClassRule
+    public static ToxiproxyRule toxiproxyRule = new ToxiproxyRule();
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private final ToxiproxyClient tp = new ToxiproxyClient();
-
-    @BeforeClass
-    public static void toxiproxyEnabled() {
-        try {
-            new ToxiproxyClient().getProxies();
-        } catch (IOException e) {
-            Assume.assumeNoException(e);
-        }
-    }
+    private ToxiproxyClient tp;
 
     @Before
+    public void setup() {
+        tp = toxiproxyRule.getToxiproxyClient();
+    }
+
     @After
     public void cleanup() throws IOException {
         for (Proxy proxy : tp.getProxies()) {
