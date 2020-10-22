@@ -24,7 +24,11 @@ public class ToxiproxyClient {
     }
 
     public ToxiproxyClient(String host, int port) {
-        httpClient = new HttpClient(host, port);
+        this("http", host, port);
+    }
+
+    public ToxiproxyClient(String protocol, String host, int port) {
+        httpClient = new HttpClient(protocol, host, port);
     }
 
     public List<Proxy> getProxies() throws IOException {
