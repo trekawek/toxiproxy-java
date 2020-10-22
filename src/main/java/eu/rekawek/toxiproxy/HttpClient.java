@@ -21,11 +21,13 @@ public class HttpClient {
 
     private static final Gson GSON = new Gson();
 
+    private final String protocol;
     private final String host;
 
     private final int port;
 
-    HttpClient(String host, int port) {
+    HttpClient(String protocol, String host, int port) {
+        this.protocol = protocol;
         this.host = host;
         this.port = port;
     }
@@ -98,7 +100,7 @@ public class HttpClient {
     }
 
     private HttpURLConnection getConnection(String path) throws IOException {
-        final URL url = new URL(String.format("http://%s:%d%s", host, port, path));
+        final URL url = new URL(String.format("%s://%s:%d%s", protocol, host, port, path));
         return (HttpURLConnection) url.openConnection();
     }
 
