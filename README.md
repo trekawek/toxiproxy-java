@@ -1,6 +1,6 @@
 # toxiproxy-java
 
-[![Build Status](https://travis-ci.org/trekawek/toxiproxy-java.svg?branch=master)](https://travis-ci.org/trekawek/toxiproxy-java)
+[![Build Status](https://github.com/trekawek/toxiproxy-java/workflows/CI/badge.svg)](https://github.com/trekawek/toxiproxy-java/actions?query=workflow%3ACI)
 
 This is a client library for the [Toxiproxy](https://github.com/shopify/toxiproxy) - a proxy that simulates network and system conditions. With toxiproxy-java you may use a convenient Java API to create and manage proxies. Before you using this library, please read the [Usage section of the Toxiproxy README](https://github.com/shopify/toxiproxy#usage).
 
