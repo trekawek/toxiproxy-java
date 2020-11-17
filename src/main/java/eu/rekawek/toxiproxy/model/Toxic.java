@@ -81,4 +81,11 @@ public abstract class Toxic {
     public void remove() throws IOException {
         httpClient.delete(path);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName()
+                + ": name=" + getName()
+                + ", stream=" + getStream();
+    }
 }
