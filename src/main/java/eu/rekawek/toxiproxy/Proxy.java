@@ -82,4 +82,11 @@ public class Proxy {
     void reset() throws IOException {
         setFromJson(httpClient.get(path));
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName()
+                + ": name=" + this.getName()
+                + ", enabled=" + this.isEnabled();
+    }
 }
