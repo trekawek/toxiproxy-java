@@ -20,6 +20,7 @@ jobs:
       uses: actions/setup-java@v2.2.0
       with:
         java-version: ${{ matrix.java }}
+        distribution: 'zulu'
     - name: print Java version
       run: java -version
     - name: Run tests
