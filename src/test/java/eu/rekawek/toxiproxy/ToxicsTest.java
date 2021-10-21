@@ -8,14 +8,20 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
-import eu.rekawek.toxiproxy.model.Toxic;
-import eu.rekawek.toxiproxy.model.ToxicList;
-import eu.rekawek.toxiproxy.model.toxic.*;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+
+import eu.rekawek.toxiproxy.model.Toxic;
+import eu.rekawek.toxiproxy.model.ToxicList;
+import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
+import eu.rekawek.toxiproxy.model.toxic.Latency;
+import eu.rekawek.toxiproxy.model.toxic.LimitData;
+import eu.rekawek.toxiproxy.model.toxic.ResetPeer;
+import eu.rekawek.toxiproxy.model.toxic.Slicer;
+import eu.rekawek.toxiproxy.model.toxic.SlowClose;
+import eu.rekawek.toxiproxy.model.toxic.Timeout;
 
 public class ToxicsTest {
 
@@ -165,5 +171,15 @@ public class ToxicsTest {
 
         timeout.setBytes(200);
         assertEquals(200, timeout.getBytes());
+    }
+    
+    @Test
+    public void testResetPeer() throws IOException {
+        ResetPeer reset = toxics.resetPeer("my-toxic", UPSTREAM, 100);
+
+        assertEquals(100, reset.getTimeout());
+
+        reset.setTimeout(200);
+        assertEquals(200, reset.getTimeout());
     }
 }

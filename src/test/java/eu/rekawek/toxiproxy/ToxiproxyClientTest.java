@@ -8,14 +8,16 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
-import eu.rekawek.toxiproxy.model.ToxicDirection;
-import eu.rekawek.toxiproxy.model.toxic.LimitData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import eu.rekawek.toxiproxy.model.ToxicDirection;
+import eu.rekawek.toxiproxy.model.toxic.LimitData;
+import eu.rekawek.toxiproxy.model.toxic.ResetPeer;
 
 public class ToxiproxyClientTest {
 
@@ -142,6 +144,25 @@ public class ToxiproxyClientTest {
         assertEquals(toxicUp.getStream(), ToxicDirection.UPSTREAM);
 
         assertEquals(toxicDown.getBytes(), 10);
+        assertEquals(toxicDown.getStream(), ToxicDirection.DOWNSTREAM);
+    }
+    
+    @Test
+    public void testToxicResetPeer() throws IOException {
+        Proxy proxy = tp.createProxy("test-proxy", "127.0.0.1:26379", "localhost:6379");
+
+        proxy.toxics().resetPeer("reset-peer-down", ToxicDirection.DOWNSTREAM, 10);
+        proxy.toxics().resetPeer("reset-peer-up", ToxicDirection.UPSTREAM, 10);
+
+        proxy = tp.getProxy("test-proxy");
+
+        ResetPeer toxicUp = (ResetPeer )proxy.toxics().get("reset-peer-up");
+        ResetPeer toxicDown = (ResetPeer )proxy.toxics().get("reset-peer-down");
+
+        assertEquals(toxicUp.getTimeout(), 10);
+        assertEquals(toxicUp.getStream(), ToxicDirection.UPSTREAM);
+
+        assertEquals(toxicDown.getTimeout(), 10);
         assertEquals(toxicDown.getStream(), ToxicDirection.DOWNSTREAM);
     }
 
