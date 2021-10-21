@@ -1,19 +1,21 @@
 package eu.rekawek.toxiproxy.model;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import eu.rekawek.toxiproxy.HttpClient;
-import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
-import eu.rekawek.toxiproxy.model.toxic.Latency;
-import eu.rekawek.toxiproxy.model.toxic.Slicer;
-import eu.rekawek.toxiproxy.model.toxic.SlowClose;
-import eu.rekawek.toxiproxy.model.toxic.Timeout;
-import eu.rekawek.toxiproxy.model.toxic.LimitData;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import eu.rekawek.toxiproxy.HttpClient;
+import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
+import eu.rekawek.toxiproxy.model.toxic.Latency;
+import eu.rekawek.toxiproxy.model.toxic.LimitData;
+import eu.rekawek.toxiproxy.model.toxic.ResetPeer;
+import eu.rekawek.toxiproxy.model.toxic.Slicer;
+import eu.rekawek.toxiproxy.model.toxic.SlowClose;
+import eu.rekawek.toxiproxy.model.toxic.Timeout;
 
 public class ToxicList {
 
@@ -73,6 +75,10 @@ public class ToxicList {
 
     public LimitData limitData(String name, ToxicDirection direction, long bytes) throws IOException {
         return new LimitData(httpClient, path, name, direction, bytes);
+    }
+    
+    public ResetPeer resetPeer(String name, ToxicDirection direction, long timeout) throws IOException {
+        return new ResetPeer(httpClient, path, name, direction, timeout);
     }
 
     private String getToxicPath(String name) {
