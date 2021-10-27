@@ -1,13 +1,15 @@
 package eu.rekawek.toxiproxy.model;
 
 import com.google.gson.JsonObject;
+
 import eu.rekawek.toxiproxy.HttpClient;
 import eu.rekawek.toxiproxy.model.toxic.Bandwidth;
 import eu.rekawek.toxiproxy.model.toxic.Latency;
+import eu.rekawek.toxiproxy.model.toxic.LimitData;
+import eu.rekawek.toxiproxy.model.toxic.ResetPeer;
 import eu.rekawek.toxiproxy.model.toxic.Slicer;
 import eu.rekawek.toxiproxy.model.toxic.SlowClose;
 import eu.rekawek.toxiproxy.model.toxic.Timeout;
-import eu.rekawek.toxiproxy.model.toxic.LimitData;
 
 public enum ToxicType {
 
@@ -34,6 +36,10 @@ public enum ToxicType {
     }, LIMIT_DATA {
         protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
             return new LimitData(httpClient, path, json);
+        }
+    }, RESET_PEER {
+        protected Toxic doCreateToxic(HttpClient httpClient, String path, JsonObject json) {
+            return new ResetPeer(httpClient, path, json);
         }
     };
 

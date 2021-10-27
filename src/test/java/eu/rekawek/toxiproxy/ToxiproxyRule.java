@@ -17,7 +17,7 @@ public class ToxiproxyRule implements TestRule {
 
     public ToxiproxyRule() {
         wrappedRule = new DockerRule(ImmutableDockerConfig.builder()
-                .image("shopify/toxiproxy:2.1.4")
+                .image("shopify/toxiproxy:2.2.0")
                 .addStartedListener(container -> {
                     container.waitForPort(ExposedPort.tcp(8474));
                 })
