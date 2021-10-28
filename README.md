@@ -10,7 +10,7 @@ Installation:
 <dependency>
   <groupId>eu.rekawek.toxiproxy</groupId>
   <artifactId>toxiproxy-java</artifactId>
-  <version>2.1.4</version>
+  <version>2.1.5</version>
 </dependency>
 ```
 
