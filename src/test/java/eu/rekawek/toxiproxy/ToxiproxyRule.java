@@ -1,45 +1,30 @@
 package eu.rekawek.toxiproxy;
 
-import com.arakelian.docker.junit.DockerRule;
-import com.arakelian.docker.junit.model.ImmutableDockerConfig;
-import org.junit.Assume;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-import repackaged.com.arakelian.docker.junit.com.github.dockerjava.api.model.ExposedPort;
-import repackaged.com.arakelian.docker.junit.com.github.dockerjava.api.model.PortBinding;
-import repackaged.com.arakelian.docker.junit.com.github.dockerjava.core.DockerClientImpl;
-import repackaged.com.arakelian.docker.junit.com.github.dockerjava.okhttp.OkHttpDockerCmdExecFactory;
+import org.junit.rules.ExternalResource;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.HostPortWaitStrategy;
 
-public class ToxiproxyRule implements TestRule {
+public class ToxiproxyRule extends ExternalResource {
 
-    private final DockerRule wrappedRule;
+    private static final int PORT = 8474;
+
+    private final GenericContainer<?> container;
 
     public ToxiproxyRule() {
-        wrappedRule = new DockerRule(ImmutableDockerConfig.builder()
-                .image("ghcr.io/shopify/toxiproxy:2.8.0")
-                .addStartedListener(container -> {
-                    container.waitForPort(ExposedPort.tcp(8474));
-                })
-                .addHostConfigConfigurer(hostConfig -> {
-                    hostConfig.withPortBindings(PortBinding.parse("8474"));
-                })
-                .build());
+        container = new GenericContainer<>("ghcr.io/shopify/toxiproxy:2.8.0")
+                .waitingFor(new HostPortWaitStrategy().forPorts(PORT))
+                .withExposedPorts(PORT);
+    }
+
+    protected void before() {
+        container.start();
+    }
+
+    protected void after() {
+        container.stop();
     }
 
     public ToxiproxyClient getToxiproxyClient() {
-        int mappedPort = wrappedRule.getContainer().getSimpleBinding(ExposedPort.tcp(8474)).getPort();
-        ToxiproxyClient tp = new ToxiproxyClient("localhost", mappedPort);
-        return tp;
-    }
-
-    @Override
-    public Statement apply(Statement statement, Description description) {
-        try {
-            DockerClientImpl.getInstance().withDockerCmdExecFactory(new OkHttpDockerCmdExecFactory()).pingCmd().exec();
-        } catch (Exception e) {
-            Assume.assumeNoException(e);
-        }
-        return wrappedRule.apply(statement, description);
+        return new ToxiproxyClient(container.getHost(), container.getMappedPort(PORT));
     }
 }

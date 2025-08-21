@@ -117,9 +117,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.arakelian</groupId>
-      <artifactId>docker-junit-rule</artifactId>
-      <version>4.1.0</version>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>1.21.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
