@@ -11,7 +11,7 @@ public class ToxiproxyRule extends ExternalResource {
     private final GenericContainer<?> container;
 
     public ToxiproxyRule() {
-        container = new GenericContainer<>("ghcr.io/shopify/toxiproxy:2.8.0")
+        container = new GenericContainer<>("ghcr.io/shopify/toxiproxy:2.12.0")
                 .waitingFor(new HostPortWaitStrategy().forPorts(PORT))
                 .withExposedPorts(PORT);
     }
