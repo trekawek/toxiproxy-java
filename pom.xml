@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.rekawek.toxiproxy</groupId>
     <artifactId>toxiproxy-java</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.10-SNAPSHOT</version>
+    <version>2.1.10</version>
     <name>Toxiproxy Java Client</name>
     <description>A Java client for the Toxiproxy.</description>
     <url>https://github.com/trekawek/toxiproxy-java</url>
@@ -27,7 +26,7 @@
         <connection>scm:git:git@github.com:trekawek/toxiproxy-java.git</connection>
         <developerConnection>scm:git:git@github.com:trekawek/toxiproxy-java.git</developerConnection>
         <url>git@github.com:trekawek/toxiproxy-java.git</url>
-        <tag>HEAD</tag>
+        <tag>toxiproxy-java-2.1.10</tag>
     </scm>
 
     <properties>
